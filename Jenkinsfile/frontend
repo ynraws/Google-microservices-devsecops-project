@@ -9,7 +9,7 @@ pipeline {
         SCANNER_HOME = tool 'sonar-scanner'
         DOCKER_NAME = 'itsmeynr/frontend'
         IMAGE_NAME = 'frontend'
-        dockerpwd = Aadhya@12345
+        dockerpwd = 'Aadhya@12345'
         // This is a global definition. We'll ensure it's used correctly below.
         GO_BIN_PATH = '$(go env GOPATH)/bin'
     }
