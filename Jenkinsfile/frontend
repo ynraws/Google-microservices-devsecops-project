@@ -168,21 +168,23 @@ pipeline {
                 }
             }
         }
-        stage("Push to DockerHub") {
+     stage("Tag & Push to DockerHub") {
             steps {
                 dir('src/frontend') {
-                    withCredentials([string(credentialsId: 'docker-cred')]) {
-                        sh '''
-                        docker login -u itsmeynr
-                        docker push ${IMAGE_TAG}
-                        docker tag ${IMAGE_NAME} ${DOCKER_NAME}:latest
-                        docker push ${DOCKER_NAME}:latest
-                        '''
+                    script {
+                        withCredentials([string(credentialsId: 'docker-cred', variable: 'dockerpwd')]) {
+                            sh "docker login -u harishnshetty -p ${dockerpwd}"
+                            sh "docker tag $IMAGE_NAME ${env.IMAGE_TAG}"
+                            sh "docker push ${env.IMAGE_TAG}"
+
+                            // Also push latest
+                            sh "docker tag $IMAGE_NAME $DOCKER_NAME:latest"
+                            sh "docker push $DOCKER_NAME:latest"
+                        }
                     }
                 }
             }
         }
-		
 
         stage("Trivy Scan Image") {
             steps {
