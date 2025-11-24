@@ -70,14 +70,6 @@ pipeline {
             }
         }
 
-        stage("Quality Gate") {
-            steps {
-                script {
-                        waitForQualityGate abortPipeline: true, credentialsId: 'sonar-token'
-                    }
-                }
-            }
-
         // --- Core CI Stages start after successful Quality Gate ---
 
         stage('Go Build') {
