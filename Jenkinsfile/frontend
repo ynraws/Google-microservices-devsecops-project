@@ -171,8 +171,8 @@ pipeline {
             steps {
                 dir('src/frontend') {
                     script {
-                        withCredentials([string(credentialsId: 'docker-cred')]) {
-                            sh "docker login -u itsmeynr -p Aadhya@12345
+                        withCredentials([string(credentialsId: 'docker-cred', variable: 'dockerpwd')]) {
+                            sh "docker login -u itsmeynr -p ${dockerpwd}"
                             sh "docker tag $IMAGE_NAME ${env.IMAGE_TAG}"
                             sh "docker push ${env.IMAGE_TAG}"
 
