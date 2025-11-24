@@ -126,9 +126,9 @@ pipeline {
         stage("Push to DockerHub") {
             steps {
                 dir('src/loadgenerator') {
-                    withCredentials([string(credentialsId: 'docker-cred', variable: 'dockerpwd')]) {
+                    withCredentials([string(credentialsId: 'docker-cred')]) {
                         sh '''
-                        docker login -u harishnshetty -p ${dockerpwd}
+                        docker login -u harishnshetty
                         docker push ${IMAGE_TAG}
                         docker tag ${IMAGE_NAME} ${DOCKER_NAME}:latest
                         docker push ${DOCKER_NAME}:latest
