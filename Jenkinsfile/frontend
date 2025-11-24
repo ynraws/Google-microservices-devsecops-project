@@ -152,39 +152,17 @@ pipeline {
                 }
             }
         }
-        stage("Build Docker Image") {
-            steps {
-                dir('src/frontend') {
-                    script {
-                        env.IMAGE_TAG = "$DOCKER_NAME:${BUILD_NUMBER}"
-
-                        // Optional cleanup
-                        sh "docker rmi -f $IMAGE_NAME ${env.IMAGE_TAG} || true"
-
-                        sh "docker build -t $IMAGE_NAME ."
-                        sh "docker tag $IMAGE_NAME ${env.IMAGE_TAG}"
-                    }
-                }
-            }
-        }
-   stage("Tag & Push to DockerHub") {
-            steps {
-                dir('src/frontend') {
-                    script {
-                        withCredentials([string(credentialsId: 'docker-cred', variable: 'dockerpwd')]) {
-                            sh "docker login -u itsmeynr -p ${dockerpwd}"
-                            sh "docker tag $IMAGE_NAME ${env.IMAGE_TAG}"
-                            sh "docker push ${env.IMAGE_TAG}"
-
-                            // Also push latest
-                            sh "docker tag $IMAGE_NAME $DOCKER_NAME:latest"
-                            sh "docker push $DOCKER_NAME:latest"
-                        }
-                    }
-                }
-            }
-        }
-
+    stage("Docker Build & Push"){
+             steps{
+                 script{
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker'){   
+                        sh "docker build -t frontend ."
+                        sh "docker tag swiggy-clone itsmeynr/frontend:latest "
+                        sh "docker push itsmeynr/frontend:latest "
+                     }
+                 }
+             }
+         }
         stage("Trivy Scan Image") {
             steps {
                 dir('src/frontend') {
