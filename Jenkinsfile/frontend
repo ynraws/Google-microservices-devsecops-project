@@ -8,8 +8,6 @@ pipeline {
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
         DOCKER_NAME = 'itsmeynr/frontend'
-        DOCKER_USERNAME = 'itsmeynr'
-        DOCKER_PASSWORD = 'Aadhya@12345'
         IMAGE_NAME = 'frontend'
         // This is a global definition. We'll ensure it's used correctly below.
         GO_BIN_PATH = '$(go env GOPATH)/bin'
@@ -169,12 +167,12 @@ pipeline {
                 }
             }
         }
-     stage("Tag & Push to DockerHub") {
+   stage("Tag & Push to DockerHub") {
             steps {
                 dir('src/frontend') {
                     script {
-                        withCredentials([string(credentialsId: 'docker-cred')]) {
-                            sh "docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
+                        withCredentials([string(credentialsId: 'docker-cred', variable: 'dockerpwd')]) {
+                            sh "docker login -u harishnshetty -p ${dockerpwd}"
                             sh "docker tag $IMAGE_NAME ${env.IMAGE_TAG}"
                             sh "docker push ${env.IMAGE_TAG}"
 
