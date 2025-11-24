@@ -22,7 +22,7 @@ pipeline {
 
         stage("Git Checkout") {
             steps {
-                git branch: 'main', url: 'https://github.com/harishnshetty/Google-microservices-devsecops-project.git'
+                git branch: 'main', url: 'https://github.com/ynraws/Google-microservices-devsecops-project.git'
             }
         }
 
@@ -238,8 +238,8 @@ pipeline {
                             <p>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
 
                         """,
-                        to: 'harishn662@gmail.com',
-                        from: 'harishn662@gmail.com',
+                        to: 'itsmeynr@gmail.com',
+                        from: 'itsmeynr@gmail.com',
                         mimeType: 'text/html',
                         attachmentsPattern: 'trivy-fs-report.txt,trivy-image-frontend.json,trivy-image-frontend.txt,gosec-report.json'
                     )
